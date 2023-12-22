@@ -1,86 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <ImageView
-        android:id="@+id/backgroundImage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/bg"
-        android:scaleType="centerCrop"/>
+    tools:context=".MainActivity">
 
     <EditText
-        android:id="@+id/urlEditText"
+        android:id="@+id/url"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_margin="10dp"
+        android:background="@color/black"
+        android:textColor="@color/white"
+        android:hint="Url"
+        android:textSize="18sp"
+        android:padding="10dp"
         android:inputType="textUri"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/edittext_bg"
-        android:hint="Enter URL"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="5dp" />
+        android:textColorHint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/saveButton"
+    <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/urlEditText"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:text="Start"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/url" />
 
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/button_background_2"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
-        android:text="Save URL" />
-
-    <LinearLayout
-        android:id="@+id/serviceButtonsLayout"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/saveButton"
-        android:layout_alignStart="@+id/urlEditText"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone">
+        android:text="Stop"
+        app:layout_constraintEnd_toEndOf="@+id/url"
+        app:layout_constraintTop_toBottomOf="@+id/url" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/startServiceButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textColor="@color/white"
-            android:background="@drawable/button_background"
-            android:text="Start Service" />
-<View
-    android:layout_width="20dp"
-    android:layout_height="10dp"/>
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/stopServiceButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textColor="@color/white"
-            android:background="@drawable/button_background"
-            android:text="Stop Service" />
-    </LinearLayout>
-<TextView
-    android:id="@+id/tv_url"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    tools:text="http://google.com"
-    android:layout_centerInParent="true"
-    android:textColor="#AD21F3"
-    android:textSize="23sp"/>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

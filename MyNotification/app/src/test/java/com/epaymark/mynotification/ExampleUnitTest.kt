@@ -1,4 +1,4 @@
-package com.noti.teli
+package com.epaymark.mynotification
 
 import org.junit.Test
 

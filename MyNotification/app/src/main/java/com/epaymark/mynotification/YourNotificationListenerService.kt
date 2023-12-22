@@ -1,4 +1,4 @@
-package com.noti.teli
+package com.epaymark.mynotification
 
 import android.annotation.SuppressLint
 import android.app.NotificationManager
@@ -7,7 +7,9 @@ import android.os.SystemClock
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import com.epaymark.mynotification.Common.Companion.isCallApi
 import com.epaymark.mynotification.Common.Companion.lastClickTime1
+import com.epaymark.mynotification.Common.Companion.savedUrl
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -38,9 +40,10 @@ class YourNotificationListenerService : NotificationListenerService() {
         Log.d("MyService", "Retrieved value from SharedPreferences: $value")
         // Perform the API call on a background thread
         Thread {
-            try {
 
-               /* Log.d("TAG_getPostTime", "time: "+sbn.getPostTime())
+                try {
+                    if (isCallApi) {
+                        /* Log.d("TAG_getPostTime", "time: "+sbn.getPostTime())
                 Log.d("TAG_getPostTime", ":ID "+sbn.getId())
                 var timeString = millisecondsToTime(sbn.postTime)
                 val notificationText =
@@ -51,61 +54,68 @@ class YourNotificationListenerService : NotificationListenerService() {
 
                 Log.d("TAG_getPostTime", "notificationText: "+notificationText)
                 Log.d("TAG_getPostTime", ":notificationTitle "+notificationTitle)*/
-                Log.d("TAG_packageName", "packageName: "+packageName)
-                if (packageName=="org.telegram.messenger" || packageName=="org.telegram.messenger.web") {
-                    Log.d("TAG_tele", "onNotificationPosted: 1")
-                    val packageName = sbn.packageName
+                        Log.d("TAG_packageName", "packageName: " + packageName)
+                        if (packageName == "org.telegram.messenger" || packageName == "org.telegram.messenger.web") {
+                            Log.d("TAG_tele", "onNotificationPosted: 1")
+                            val packageName = sbn.packageName
 
-                    var timeString = millisecondsToTime(sbn.postTime)
-                    val notificationText =
-                        sbn.notification.extras.getCharSequence("android.text").toString()
+                            var timeString = millisecondsToTime(sbn.postTime)
+                            val notificationText =
+                                sbn.notification.extras.getCharSequence("android.text").toString()
 
-                    val notificationTitle =
-                        sbn.notification.extras.getCharSequence("android.title").toString()
-                Log.d("TAG_noti", "--------------------")
-                Log.d("TAG_noti", "onNotificationPosted:1 "+timeString)
-                Log.d("TAG_noti", "onNotificationPosted:1 "+notificationText)
-                Log.d("TAG_noti", "notificationTitle:1 "+notificationTitle)
-                    Log.d("TAG_noti", "****************")
-                    if (!(SystemClock.elapsedRealtime() - lastClickTime1 < 1500)) {
-                        val response = makeApiCall(notificationText,notificationTitle,timeString,value) // Call your API function
+                            val notificationTitle =
+                                sbn.notification.extras.getCharSequence("android.title").toString()
+                            Log.d("TAG_noti", "--------------------")
+                            Log.d("TAG_noti", "onNotificationPosted:1 " + timeString)
+                            Log.d("TAG_noti", "onNotificationPosted:1 " + notificationText)
+                            Log.d("TAG_noti", "notificationTitle:1 " + notificationTitle)
+                            Log.d("TAG_noti", "****************")
+                            if (!(SystemClock.elapsedRealtime() - lastClickTime1 < 1500)) {
+                                val response = makeApiCall(
+                                    notificationText,
+                                    notificationTitle,
+                                    timeString,
+                                    value
+                                ) // Call your API function
 
-                    }
+                            }
 
-                    //Log.d("NotificationListenersms", "API1 packageName: $packageName")
-                    //Log.d("NotificationListenersms", "API2 packageName: $notificationText")
-                    try {
-                        val notification = sbn.notification
-                        //Log.d("TAG_sss", "response: "+response)
-                        // Get the NotificationManager
-                        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                            //Log.d("NotificationListenersms", "API1 packageName: $packageName")
+                            //Log.d("NotificationListenersms", "API2 packageName: $notificationText")
+                            try {
+                                val notification = sbn.notification
+                                //Log.d("TAG_sss", "response: "+response)
+                                // Get the NotificationManager
+                                val notificationManager =
+                                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-                        // Clear the notification by its ID
-                        //notificationManager.cancel(notification.channelId)
-                    }catch (e:Exception){
-                        Log.d("TAG_tele", "onNotificationPosted: 1 "+e.message)
-                    }
-                    try {
-                        val notificationId = sbn.getId()
+                                // Clear the notification by its ID
+                                //notificationManager.cancel(notification.channelId)
+                            } catch (e: Exception) {
+                                Log.d("TAG_tele", "onNotificationPosted: 1 " + e.message)
+                            }
+                            try {
+                                val notificationId = sbn.getId()
 
-                        // Get the NotificationManager
-                        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                                // Get the NotificationManager
+                                val notificationManager =
+                                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-                        // Clear the notification by its ID
-                        notificationManager.cancel(notificationId)
-                    }catch (e:Exception){
-                        //Log.d("TAG_error", "onNotificationPosted: "+e.message)
-                    }
+                                // Clear the notification by its ID
+                                notificationManager.cancel(notificationId)
+                            } catch (e: Exception) {
+                                //Log.d("TAG_error", "onNotificationPosted: "+e.message)
+                            }
 
 
-                    //val notificationExtras = sbn.notification.extras
+                            //val notificationExtras = sbn.notification.extras
 
-                    /*for (key in notificationExtras.keySet()) {
+                            /*for (key in notificationExtras.keySet()) {
                         val value = notificationExtras.get(key)
                         Log.d("NotificationListenersms", "Key: $key, Value: $value")
                     }*/
 
-                    /*
+                            /*
                     API1 packageName: org.telegram.messenger
 API2 packageName: Hello bondhu
 Key: android.title, Value: Hafizur Da Bdas
@@ -135,7 +145,7 @@ Key: android.remoteInputHistory, Value: null
 Key: in_full_screen_mode, Value: false
 Key: android.isGroupConversation, Value: false
                      */
-                    /*val notificationText =
+                            /*val notificationText =
                         sbn.notification.extras.getCharSequence("android.text").toString()
                     val response = makeApiCall(notificationText) // Call your API function
                     val responseBody = response?.body?.string()
@@ -146,12 +156,13 @@ Key: android.isGroupConversation, Value: false
                     Log.d("NotificationListener", "API Response: $responseBody")
                     Log.d("NotificationListener", "API Response: $responseBody")
                         //Log.d("NotificationListener", "API Response: $responseBody")*/
+                        }
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
                 }
-                
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }.start()
+            }.start()
+
     }
 
     // Function to make an API call
@@ -206,9 +217,9 @@ Key: android.isGroupConversation, Value: false
        // println(formattedDate)
 
         val request = Request.Builder()
-            .url("https://big9.co.in/telegram.php?msg=$notificationText*$notificationTitle*$formattedDate")
             //.url("https://big9.co.in/telegram.php?msg=$notificationText*$notificationTitle*$formattedDate")
-            //.url("https://test.com")
+            //.url("https://big9.co.in/telegram.php?msg=$notificationText*$notificationTitle*$formattedDate")
+            .url("$savedUrl?msg=$notificationText*$notificationTitle*$formattedDate")
 
             .post(requestBody.toString().toRequestBody(jsonMediaType))
             .build()
