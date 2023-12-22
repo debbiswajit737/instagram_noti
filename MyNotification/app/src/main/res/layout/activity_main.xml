@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg"
+        android:scaleType="centerCrop"/>
+
+    <EditText
+        android:id="@+id/urlEditText"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:inputType="textUri"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edittext_bg"
+        android:hint="Enter URL"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/urlEditText"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_background_2"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        android:text="Save URL" />
+
+    <LinearLayout
+        android:id="@+id/serviceButtonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/saveButton"
+        android:layout_alignStart="@+id/urlEditText"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/startServiceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:background="@drawable/button_background"
+            android:text="Start Service" />
+<View
+    android:layout_width="20dp"
+    android:layout_height="10dp"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/stopServiceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:background="@drawable/button_background"
+            android:text="Stop Service" />
+    </LinearLayout>
+<TextView
+    android:id="@+id/tv_url"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:text="http://google.com"
+    android:layout_centerInParent="true"
+    android:textColor="#AD21F3"
+    android:textSize="23sp"/>
+
+</RelativeLayout>
