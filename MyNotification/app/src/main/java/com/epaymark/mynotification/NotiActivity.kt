@@ -73,10 +73,15 @@ class NotiActivity : AppCompatActivity() {
         }
 
         // Check if URL is already saved and update buttons visibility
-        updateButtonsVisibility()
+
 
         isServiceRunning()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateButtonsVisibility()
     }
     fun isServiceRunning(){
         // Check if the service is running
@@ -90,14 +95,17 @@ class NotiActivity : AppCompatActivity() {
         }
     }
     private fun updateButtonsVisibility() {
+        try {
+            if (!savedUrl.isNullOrBlank()) {
+                binding.tvUrl.text=savedUrl
+                // binding.serviceButtonsLayout.visibility = View.VISIBLE
+            } else {
+                binding.tvUrl.text="No Url"
+                // binding.serviceButtonsLayout.visibility = View.GONE
+            }
+        }catch (e:Exception){}
          savedUrl = sharedPreferences.getString("savedUrl", null).toString()
-        if (!savedUrl.isNullOrBlank()) {
-            binding.tvUrl.text=savedUrl
-           // binding.serviceButtonsLayout.visibility = View.VISIBLE
-        } else {
-            binding.tvUrl.text="No Url"
-           // binding.serviceButtonsLayout.visibility = View.GONE
-        }
+
     }
     private fun isNotificationServiceRunning(serviceClass: Class<*>): Boolean {
         val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager

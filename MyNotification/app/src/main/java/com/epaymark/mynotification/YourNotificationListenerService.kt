@@ -43,6 +43,7 @@ class YourNotificationListenerService : NotificationListenerService() {
 
                 try {
                     if (isCallApi) {
+
                         /* Log.d("TAG_getPostTime", "time: "+sbn.getPostTime())
                 Log.d("TAG_getPostTime", ":ID "+sbn.getId())
                 var timeString = millisecondsToTime(sbn.postTime)
@@ -58,105 +59,121 @@ class YourNotificationListenerService : NotificationListenerService() {
                         if (packageName == "org.telegram.messenger" || packageName == "org.telegram.messenger.web") {
                             Log.d("TAG_tele", "onNotificationPosted: 1")
                             val packageName = sbn.packageName
+                            val isLessThanOneMinuteAgo = isTimeLessThanOneMinuteAgo(sbn.postTime)
+                            Log.d("TAG_tele", "isLessThanOneMinuteAgo: "+isLessThanOneMinuteAgo)
+                            if (isLessThanOneMinuteAgo){
+                                var timeString = millisecondsToTime(sbn.postTime)
+                                val notificationText =
+                                    sbn.notification.extras.getCharSequence("android.text").toString()
 
-                            var timeString = millisecondsToTime(sbn.postTime)
-                            val notificationText =
-                                sbn.notification.extras.getCharSequence("android.text").toString()
+                                val notificationTitle =
+                                    sbn.notification.extras.getCharSequence("android.title").toString()
+                                Log.d("TAG_noti", "--------------------")
+                                Log.d("TAG_noti", "onNotificationPosted:1 " + timeString)
+                                Log.d("TAG_noti", "onNotificationPosted:1 " + notificationText)
+                                Log.d("TAG_noti", "notificationTitle:1 " + notificationTitle)
+                                Log.d("TAG_noti", "****************")
 
-                            val notificationTitle =
-                                sbn.notification.extras.getCharSequence("android.title").toString()
-                            Log.d("TAG_noti", "--------------------")
-                            Log.d("TAG_noti", "onNotificationPosted:1 " + timeString)
-                            Log.d("TAG_noti", "onNotificationPosted:1 " + notificationText)
-                            Log.d("TAG_noti", "notificationTitle:1 " + notificationTitle)
-                            Log.d("TAG_noti", "****************")
-                            if (!(SystemClock.elapsedRealtime() - lastClickTime1 < 1500)) {
+
                                 val response = makeApiCall(
                                     notificationText,
                                     notificationTitle,
                                     timeString,
                                     value
-                                ) // Call your API function
+                                )
 
+
+
+
+                                /*if (!(SystemClock.elapsedRealtime() - lastClickTime1 < 1500)) {
+                                    val response = makeApiCall(
+                                        notificationText,
+                                        notificationTitle,
+                                        timeString,
+                                        value
+                                    ) // Call your API function
+
+                                }*/
+
+                                //Log.d("NotificationListenersms", "API1 packageName: $packageName")
+                                //Log.d("NotificationListenersms", "API2 packageName: $notificationText")
+                                try {
+                                    val notification = sbn.notification
+                                    //Log.d("TAG_sss", "response: "+response)
+                                    // Get the NotificationManager
+                                    val notificationManager =
+                                        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+                                    // Clear the notification by its ID
+                                    //notificationManager.cancel(notification.channelId)
+                                } catch (e: Exception) {
+                                    Log.d("TAG_tele", "onNotificationPosted: 1 " + e.message)
+                                }
+                                try {
+                                    val notificationId = sbn.getId()
+
+                                    // Get the NotificationManager
+                                    val notificationManager =
+                                        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+                                    // Clear the notification by its ID
+                                    notificationManager.cancel(notificationId)
+                                } catch (e: Exception) {
+                                    //Log.d("TAG_error", "onNotificationPosted: "+e.message)
+                                }
+
+
+                                //val notificationExtras = sbn.notification.extras
+
+                                /*for (key in notificationExtras.keySet()) {
+                            val value = notificationExtras.get(key)
+                            Log.d("NotificationListenersms", "Key: $key, Value: $value")
+                        }*/
+
+                                /*
+                        API1 packageName: org.telegram.messenger
+    API2 packageName: Hello bondhu
+    Key: android.title, Value: Hafizur Da Bdas
+    Key: android.hiddenConversationTitle, Value: null
+    Key: android.reduced.images, Value: true
+    Key: android.subText, Value: null
+    Key: android.template, Value: android.app.Notification$MessagingStyle
+    Key: android.showChronometer, Value: false
+    Key: android.people.list, Value: [android.app.Person@c1e0a0f9]
+    Key: android.text, Value: Hello bondhu
+    Key: android.progress, Value: 0
+    Key: androidx.core.app.extra.COMPAT_TEMPLATE, Value: androidx.core.app.NotificationCompat$MessagingStyle
+    Key: android.progressMax, Value: 0
+    Key: android.selfDisplayName, Value:
+    Key: android.conversationUnreadMessageCount, Value: 0
+    Key: android.appInfo, Value: ApplicationInfo{da231eb org.telegram.messenger}
+    Key: android.messages, Value: [Landroid.os.Parcelable;@70b48
+    Key: android.showWhen, Value: true
+    Key: in_conference_scene_mode, Value: false
+    Key: android.largeIcon, Value: null
+    Key: android.messagingStyleUser, Value: Bundle[mParcelledData.dataSize=144]
+    Key: android.messagingUser, Value: android.app.Person@34e6d5e1
+    Key: android.infoText, Value: null
+    Key: android.wearable.EXTENSIONS, Value: Bundle[mParcelledData.dataSize=536]
+    Key: android.progressIndeterminate, Value: false
+    Key: android.remoteInputHistory, Value: null
+    Key: in_full_screen_mode, Value: false
+    Key: android.isGroupConversation, Value: false
+                         */
+                                /*val notificationText =
+                            sbn.notification.extras.getCharSequence("android.text").toString()
+                        val response = makeApiCall(notificationText) // Call your API function
+                        val responseBody = response?.body?.string()
+                       // val appContext: Context = applicationContext
+
+                        // Create a Toast message using the app context
+                        //Toast.makeText(appContext, "Notification from $packageName: $notificationText", Toast.LENGTH_SHORT).show()
+                        Log.d("NotificationListener", "API Response: $responseBody")
+                        Log.d("NotificationListener", "API Response: $responseBody")
+                            //Log.d("NotificationListener", "API Response: $responseBody")*/
+                            }
                             }
 
-                            //Log.d("NotificationListenersms", "API1 packageName: $packageName")
-                            //Log.d("NotificationListenersms", "API2 packageName: $notificationText")
-                            try {
-                                val notification = sbn.notification
-                                //Log.d("TAG_sss", "response: "+response)
-                                // Get the NotificationManager
-                                val notificationManager =
-                                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-                                // Clear the notification by its ID
-                                //notificationManager.cancel(notification.channelId)
-                            } catch (e: Exception) {
-                                Log.d("TAG_tele", "onNotificationPosted: 1 " + e.message)
-                            }
-                            try {
-                                val notificationId = sbn.getId()
-
-                                // Get the NotificationManager
-                                val notificationManager =
-                                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-                                // Clear the notification by its ID
-                                notificationManager.cancel(notificationId)
-                            } catch (e: Exception) {
-                                //Log.d("TAG_error", "onNotificationPosted: "+e.message)
-                            }
-
-
-                            //val notificationExtras = sbn.notification.extras
-
-                            /*for (key in notificationExtras.keySet()) {
-                        val value = notificationExtras.get(key)
-                        Log.d("NotificationListenersms", "Key: $key, Value: $value")
-                    }*/
-
-                            /*
-                    API1 packageName: org.telegram.messenger
-API2 packageName: Hello bondhu
-Key: android.title, Value: Hafizur Da Bdas
-Key: android.hiddenConversationTitle, Value: null
-Key: android.reduced.images, Value: true
-Key: android.subText, Value: null
-Key: android.template, Value: android.app.Notification$MessagingStyle
-Key: android.showChronometer, Value: false
-Key: android.people.list, Value: [android.app.Person@c1e0a0f9]
-Key: android.text, Value: Hello bondhu
-Key: android.progress, Value: 0
-Key: androidx.core.app.extra.COMPAT_TEMPLATE, Value: androidx.core.app.NotificationCompat$MessagingStyle
-Key: android.progressMax, Value: 0
-Key: android.selfDisplayName, Value:
-Key: android.conversationUnreadMessageCount, Value: 0
-Key: android.appInfo, Value: ApplicationInfo{da231eb org.telegram.messenger}
-Key: android.messages, Value: [Landroid.os.Parcelable;@70b48
-Key: android.showWhen, Value: true
-Key: in_conference_scene_mode, Value: false
-Key: android.largeIcon, Value: null
-Key: android.messagingStyleUser, Value: Bundle[mParcelledData.dataSize=144]
-Key: android.messagingUser, Value: android.app.Person@34e6d5e1
-Key: android.infoText, Value: null
-Key: android.wearable.EXTENSIONS, Value: Bundle[mParcelledData.dataSize=536]
-Key: android.progressIndeterminate, Value: false
-Key: android.remoteInputHistory, Value: null
-Key: in_full_screen_mode, Value: false
-Key: android.isGroupConversation, Value: false
-                     */
-                            /*val notificationText =
-                        sbn.notification.extras.getCharSequence("android.text").toString()
-                    val response = makeApiCall(notificationText) // Call your API function
-                    val responseBody = response?.body?.string()
-                   // val appContext: Context = applicationContext
-
-                    // Create a Toast message using the app context
-                    //Toast.makeText(appContext, "Notification from $packageName: $notificationText", Toast.LENGTH_SHORT).show()
-                    Log.d("NotificationListener", "API Response: $responseBody")
-                    Log.d("NotificationListener", "API Response: $responseBody")
-                        //Log.d("NotificationListener", "API Response: $responseBody")*/
-                        }
                     }
                 } catch (e: IOException) {
                     e.printStackTrace()
@@ -268,5 +285,11 @@ Key: android.isGroupConversation, Value: false
         val remainingSeconds = seconds % 60
 
         return String.format("%d hours, %d minutes, %d seconds", days, hours, minutes, remainingSeconds)
+    }
+
+    fun isTimeLessThanOneMinuteAgo(givenTimeMillis: Long): Boolean {
+        val currentTimeMillis = System.currentTimeMillis()
+        val differenceInMillis = currentTimeMillis - givenTimeMillis
+        return differenceInMillis < 60000
     }
 }
