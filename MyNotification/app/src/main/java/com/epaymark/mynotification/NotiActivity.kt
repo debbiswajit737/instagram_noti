@@ -53,10 +53,6 @@ class NotiActivity : AppCompatActivity() {
                 putString("savedUrl", url)
                 apply()
             }
-
-
-
-
            /* binding.startServiceButton.setOnClickListener {
                 startService(serviceIntent)
                 //startService(serviceIntent)
@@ -69,17 +65,12 @@ class NotiActivity : AppCompatActivity() {
                 isServiceRunning()
             }*/
             updateButtonsVisibility()
-
         }
-
-        // Check if URL is already saved and update buttons visibility
-
-
         isServiceRunning()
-
     }
 
-    override fun onResume() {
+    override fun onResume()
+    {
         super.onResume()
         updateButtonsVisibility()
     }
@@ -105,7 +96,6 @@ class NotiActivity : AppCompatActivity() {
             }
         }catch (e:Exception){}
          savedUrl = sharedPreferences.getString("savedUrl", null).toString()
-
     }
     private fun isNotificationServiceRunning(serviceClass: Class<*>): Boolean {
         val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager

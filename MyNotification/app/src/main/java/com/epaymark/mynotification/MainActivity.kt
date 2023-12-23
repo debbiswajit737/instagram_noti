@@ -20,7 +20,8 @@ class MainActivity : AppCompatActivity() {
 
         if (!NotificationManagerCompat.getEnabledListenerPackages(this)
                 .contains(packageName)
-        ) {        //ask for permission
+           )
+        {        //ask for permission
             val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
             startActivity(intent)
         }

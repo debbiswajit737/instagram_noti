@@ -86,13 +86,13 @@ class telegramNotification: NotificationListenerService() {
         Log.d("NotificationListener", "Notification removed from $packageName: $notificationText")
     }
 
-    fun millisecondsToTime(milliseconds: Long): String {
+    fun millisecondsToTime(milliseconds: Long): String
+    {
         val seconds = (milliseconds / 1000).toInt()
         val days = seconds / (24 * 3600)
         val hours = (seconds % (24 * 3600)) / 3600
         val minutes = (seconds % 3600) / 60
         val remainingSeconds = seconds % 60
-
         return String.format("%d days, %d hours, %d minutes, %d seconds", days, hours, minutes, remainingSeconds)
     }
 }
